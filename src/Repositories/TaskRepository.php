@@ -1,0 +1,1 @@
+// permet d'écrire les méthodes permettant de récup des infos et d'intérargir avec la BDD (en lien avec les tâches)
