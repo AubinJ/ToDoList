@@ -54,7 +54,16 @@ async function handleRegister() {
         // Elle permet d'appeler le code de la fonction passée en paramètre dès que la Promise se "résout" (resolve)
         // On peut aussi passer  une deuxième fonction, de gestion des erreurs ('onrejected)
         // Ici, deux syntaxes pour les fonctions : une "lambda" ou arrow-function, et une fonction anonyme explicite
-        .then((res) => res.json())
+        .then((res) =>  {
+            try{
+            return res.json();
+            }
+            catch{
+                // -> c'est pas comme ça qu'on fait, mais l'idée dans tous les cas c'est de gérer les erreurs possibles
+                console.log('erreur');
+                //Affichage d'une page d'erreur avec les détails
+            }
+        })
         .then(function (data) {
             console.log(data)
             document.getElementById('modalSubscription').classList.add('hidden');
@@ -85,15 +94,49 @@ async function handleLogin() {
         body: JSON.stringify(user),
     };
 
-    fetch("./../src/Controllers/register.php", params)
+    fetch("./../src/Controllers/login.php", params)
       
-        .then((res) => res.json())
+        // .then((res) => res.json())
         .then(function (data) {
             console.log(data)
             document.getElementById('modalLogin').classList.add('hidden');
-            document.getElementById('modalTdl').classList.remove('hidden');
+            document.getElementById('modalTask').classList.remove('hidden');
         });
 }
 
+    // Fonction ajouter tâche
 
+    async function addTask() {
+    // Get the password and email of the user
+    let taskName = document.querySelector("#taskName").value;
+    let taskDescription = document.querySelector("#taskDescription").value;
+    let taskPriority = document.querySelector("#taskPriority").value;
+    let taskCategory = document.querySelector("#taskCategory").value;
+    let taskDate = document.querySelector("#taskDate").value;
 
+    let taskObject = {
+        taskName: taskName,
+        taskDescription: taskDescription,
+        taskPriority: taskPriority,
+        taskCategory: taskCategory,
+        taskDate: taskDate,
+        userId: userId,
+    };
+
+    // Define parameters to use
+    let params = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+        },
+        body: JSON.stringify(taskObject),
+    };
+
+    // send value to login.php
+    fetch("../addTask.php", params)
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data.status);
+        }
+
+    

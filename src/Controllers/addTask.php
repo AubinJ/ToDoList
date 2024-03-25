@@ -8,12 +8,6 @@ use Models\User\User;
 require __DIR__ . "/../../config.php";
 $data = json_decode(file_get_contents('php://input'), true);
 
-// Premier niveau de sécurité des données et nettoie le code (trim: enlève les espaces indésirables, strip: enlève les élements html pour parer les attaques XSS, htmlspecialchars: enlève les éléments spécials pouvant être lu comme du html)
-
-$firstName = htmlspecialchars(strip_tags(trim($data["firstName_user"])));
-$lastName = htmlspecialchars(strip_tags(trim($data["lastName_user"])));
-$email = htmlspecialchars(strip_tags(trim($data["email_user"])));
-$password = htmlspecialchars(strip_tags(trim($data["password_user"])));
 
 $user = new User([$firstName, $lastName]);
 // Second niveau de sécurité pour le mdp
